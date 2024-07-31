@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.board.dao.BoardMapper"><!-- namespace가 인터페이스명과 같아야 한다. -->
+	<!-- 글쓰기 -->
+	<insert id="insertBoard" parameterType="boardVO"><!-- 자바빈에 담아서 가져오니까 파라미터 타입은 boardVO -->
+		INSERT INTO spboard(
+			board_num,
+			category,
+			title,
+			content,
+			filename,
+			ip,
+			mem_num)
+		VALUES (
+			spboard_seq.nextval,
+			#{category},
+			#{title},
+			#{content},
+			#{filename,jdbcType=VARCHAR},
+			#{ip},
+			#{mem_num})
+	</insert>
+	<!-- sql 태그와 include 태그를 이용해서 SQL문을 재사용 -->
+	<sql id="boardSearch"><!-- 검색 -->
+		<where>
+			<if test="category != null and category != ''"><!-- 카테고리가 있을 경우에만 where절이 생기면서 이 문장이 들어간다. -->
+				category = #{category}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				<if test="category != null and category != ''"><!-- 카테고리가 있는 경우에만 AND가 생겨 연결한다. -->
+					AND 
+				</if>
+				<if test="keyfield == 1"><!-- 1번일 경우에는 타이틀에서 검색 -->
+					title LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 2"><!-- 2번일 경우에는 아이디 또는 닉네임에서 검색 -->
+					(id LIKE '%' || #{keyword} || '%' OR
+					nick_name LIKE '%' || #{keyword} || '%')
+				</if>
+				<if test="keyfield == 3"><!-- 3번일 경우에는 내용에서 검색 -->
+					content LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 4"><!-- 4번일 경우에는 타이틀 또는 내용에서 검색 -->
+					(title LIKE '%' || #{keyword} || '%' OR
+					content LIKE '%' || #{keyword} || '%')
+				</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="boardOrder"><!-- 정렬 -->
+		<if test="order == 1">
+			ORDER BY board_num DESC
+		</if>
+		<if test="order == 2">
+			ORDER BY HIT DESC
+		</if>
+		<if test="order == 3"><!-- 좋아요는 null값이 있으니까 null은 마지막으로 -->
+			ORDER BY fav_cnt DESC NULLS LAST
+		</if>
+		<if test="order == 4"><!-- 댓글도 null값이 있으니까 null은 마지막으로 -->
+			ORDER BY re_cnt DESC NULLS LAST
+		</if>
+	</sql>
+	
+	<!-- 게시판 글 총 레코드 수/검색 레코드 수 -->
+	<select id="selectRowCount" parameterType="map" resultType="integer">
+		SELECT
+			COUNT(*)
+		FROM spboard JOIN spmember USING (mem_num)
+		<include refid="boardSearch"></include>
+	</select>
+	<!-- 게시판 전체 목록/검색 목록 -->
+	<select id="selectList" parameterType="map" resultType="boardVO">
+		SELECT
+			*
+		FROM(SELECT
+				a.*,
+				rownum rnum
+			 FROM (SELECT
+			 			board_num,
+			 			<![CDATA[
+			 			REPLACE(REPLACE(title,'<','&lt;'),'>','&gt;') title,
+			 			]]>
+			 			hit,
+			 			filename,
+			 			reg_date,
+			 			mem_num,
+			 			id,
+			 			nick_name,
+			 			re_cnt,
+			 			fav_cnt
+			 		FROM spboard 
+			 		LEFT OUTER JOIN (SELECT COUNT(*) re_cnt, board_num FROM spboard_reply GROUP BY board_num) USING(board_num)
+			 		LEFT OUTER JOIN (SELECT COUNT(*) fav_cnt, board_num FROM spboard_fav GROUP BY board_num) USING(board_num)
+			 		JOIN spmember USING(mem_num)
+			 		<include refid="boardSearch"></include>
+			 		<include refid="boardOrder"></include>
+			 		)a)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
+	<!-- 게시판 글 수정 -->
+	<update id="updateBoard" parameterType="boardVO">
+		UPDATE spboard SET
+			<if test="filename != null">
+			filename = #{filename},
+			</if>
+			title = #{title},
+			content = #{content},
+			ip = #{ip},
+			modify_date = SYSDATE
+		WHERE board_num = #{board_num}
+	</update>
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertReply" parameterType="boardReplyVO">
+		INSERT INTO spboard_reply(
+			re_num,
+			re_content,
+			re_ip,
+			board_num,
+			mem_num)
+		VALUES (
+			spreply_seq.nextval,
+			#{re_content},
+			#{re_ip},
+			#{board_num},
+			#{mem_num})
+	</insert>
+	<!-- 댓글 목록 -->
+	<select id="selectListReply" parameterType="map" resultType="boardReplyVO">
+		SELECT
+			*
+		FROM (SELECT
+				a.*,
+				rownum rnum
+			FROM (SELECT
+					re_num,
+					<![CDATA[
+					REPLACE(REPLACE(re_content,'<','&lt;'),'>','&gt;') re_content,
+					]]>
+					re_date,
+					re_mdate,
+					board_num,
+					mem_num,
+					id,
+					nick_name,
+					click_num,
+					refav_cnt,
+					resp_cnt
+				FROM spboard_reply
+				JOIN spmember USING(mem_num)
+				/* 로그인 한 상태에서 클릭한 사람의 정보 읽기, 로그인하지 않으면 0 전달 */
+				LEFT OUTER JOIN (SELECT re_num,mem_num click_num 
+								FROM spreply_fav 
+								WHERE mem_num=#{mem_num}) 
+								USING(re_num)
+				LEFT OUTER JOIN (SELECT re_num,COUNT(*) refav_cnt 
+								FROM spreply_fav GROUP BY re_num)
+								USING(re_num)
+				LEFT OUTER JOIN (SELECT re_num,COUNT(*) resp_cnt
+								FROM spboard_response GROUP BY re_num)
+								USING(re_num)/*댓글의 답글 갯수를 가져오게, 답글이 없을 수 있기 때문에 LEFT OUTER JOIN*/
+				WHERE board_num=#{board_num}
+				ORDER BY re_num DESC)a)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
+	<!-- 답글 등록 -->
+	<insert id="insertResponse" parameterType="boardResponseVO">
+		INSERT INTO spboard_response(
+			te_num,
+			te_content,
+			te_parent_num,
+			te_depth,
+			te_ip,
+			re_num,
+			mem_num)
+		VALUES (
+			response_seq.nextval,
+			#{te_content},
+			#{te_parent_num},
+			#{te_depth},
+			#{te_ip},
+			#{re_num},
+			#{mem_num})
+	</insert>
+	<!-- 답글 목록 -->
+	<select id="selectListResponse" parameterType="long" resultType="boardResponseVO">
+		SELECT
+			r.te_num,
+			r.te_content,
+			r.mem_num,
+			a.id,
+			a.nick_name,
+			r.te_date,
+			r.te_mdate,
+			r.te_ip,
+			r.re_num,
+			r.te_depth,
+			r.te_parent_num,
+			m.id parent_id,/*알리아스 부여*/
+			m.nick_name pnick_name /*알리아스 부여*/
+		FROM spboard_response r
+		JOIN spmember a ON r.mem_num=a.mem_num
+		LEFT OUTER JOIN spboard_response s ON r.te_parent_num=s.te_num
+		LEFT OUTER JOIN spmember m ON s.mem_num=m.mem_num 
+		WHERE r.re_num=#{re_num} /*계층적으로 명시해야 하기 때문에 아래의 함수를 이용해서 정렬을 해야 한다*/
+		START WITH r.te_depth=0 CONNECT BY PRIOR r.te_num=r.te_parent_num ORDER SIBLINGS BY r.te_num DESC
+	</select>
+	<!-- 답글 삭제 -->
+	<delete id="deleteResponse" parameterType="long">
+		DELETE FROM spboard_response WHERE te_num IN (
+			SELECT te_num 
+			FROM spboard_response
+			START WITH te_num=#{te_num}
+			CONNECT BY PRIOR te_num = te_parent_num
+		)	
+	</delete>
+ </mapper>
