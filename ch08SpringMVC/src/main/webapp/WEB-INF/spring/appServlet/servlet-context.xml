@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- @Controller 어노테이션을 이용한 컨트롤러를 사용하기 위한 설정 -->
+	<annotation-driven/>
+	
+	<!-- DispatcherServlet의 매핑 경로를 '/'로 주었을 때, JSP/HTML/CSS 등을 올바르게 처리하기 위한 설정 -->
+	<!-- <mvc:default-servlet-handler/> -->
+	
+	<!-- 중요한 기본 설정 jsp를 호출하기 위한 설정 -->
+	<!--============================== viewResolver 설정============================= -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" /><!-- prefix가 앞에. jsp를 어디에 만들건지 -->
+		<beans:property name="suffix" value=".jsp" /><!-- suffix가 뒤에. jsp를 호출할 때의 확장자 -->
+		<beans:property name="order" value="1"/>
+	</beans:bean>
+	
+	<!-- 파일 다운로드를 위한 viewResolver 설정 -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
+	
+	<!-- MVC 기본 설정 -->
+	<beans:bean id="helloController" class="kr.spring.ch01.controller.HelloController"/>
+	
+	<!-- 파라미터로 전송된 데이터 처리 -->
+	<beans:bean id="searchController" class="kr.spring.ch02.controller.SearchController"/>
+	
+	<!-- @Autowired 사용을 위해서 -->
+	<context:annotation-config />
+	
+	<!-- 전송된 데이터 자바빈(VO)에 담기 -->
+	<beans:bean id="newArticleController" class="kr.spring.ch03.controller.NewArticleController"/>
+	<beans:bean id="newArticleService" class="kr.spring.ch03.service.NewArticleService"/>
+	
+	<!-- @CookieValue 어노테이션을 이용한 쿠키 매핑 -->
+	<beans:bean id="cookieController" class="kr.spring.ch04.controller.CookieController"/>
+	
+	<!-- 파라미터로 전달된 데이터를 자바빈에 담기 -->
+	<beans:bean class="kr.spring.ch05.controller.GameSearchController"/><!-- 스프링 MVC에서는 요청 URL로 호출이 되어 안에 있는 메서드를 사용하기 때문에 id가 필요없다. 스프링 MVC에서는 id로 호출하지 않는다. -->
+	<beans:bean class="kr.spring.ch05.service.SearchService"/><!-- @Autowired를 사용해서 타입을 체크하는 것이기 때문에 id가 필요없다. -->
+	
+	<!-- 유효성 체크 -->
+	<beans:bean class="kr.spring.ch06.controller.CreateAccountController"/><!-- 컨트롤러는 요청 URL로 하기 때문에 id가 필요없다. -->
+	
+	<!-- 리소스 번들 지정 -->
+	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"><!-- 문구가 명시되어 있는 파일을 컨테이너가 인식할 수 있도록 지정 -->
+		<beans:property name="basenames">
+			<beans:list><!-- 여러개가 있을 수 있기 때문에 list -->
+				<beans:value>messages.validation</beans:value><!-- 폴더.파일 확장자는 쓰지 않는다.-->
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<!-- 로그인 처리 -->
+	<beans:bean class="kr.spring.ch07.controller.LoginController"/>
+	<beans:bean class="kr.spring.ch07.service.LoginService"/>
+	
+	<!-- multipartResolver 설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="52428800"/><!-- 50M -->
+		<beans:property name="defaultEncoding" value="UTF-8"/>
+	</beans:bean>
+	
+	<!-- 파일 업로드 경로가 명시된 설정 파일 지정 -->
+	<context:property-placeholder location="classpath:config/file.properties"/><!-- classpath:를 명시해야지만 WEB-INF를 인식하지 않고 src 경로를 인식한다. -->
+	
+	<!-- 파일 업로드 -->
+	<beans:bean class="kr.spring.ch08.controller.SubmitReportController"/>
+	
+	<!-- 어노테이션을 이용한 유효성 체크 -->
+	<beans:bean class="kr.spring.ch09.controller.MemberWriteController"/>
+	
+	<!-- 파일 다운로드 -->
+	<beans:bean class="kr.spring.ch10.controller.DownloadController"/>
+	<beans:bean id="download" class="kr.spring.ch10.view.DownloadView"/>
+	
+	<!-- 엑셀 다운로드 -->
+	<beans:bean class="kr.spring.ch11.controller.PageRanksController"/><!-- 컨트롤러이기 때문에 아이디가 필요하지 않다. -->
+	<beans:bean id="pageRanks" class="kr.spring.ch11.view.PageRanksView"/><!-- 뷰의 이름과 빈의 이름이 일치되어야 호출되기 때문에 아이디가 필요하다. -->
+</beans:beans>
