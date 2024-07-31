@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>ch04_mvcBoard</display-name><!-- 컨텍스트 경로 -->
+  <servlet>
+  	<servlet-name>DispatcherServlet</servlet-name>
+  	<servlet-class>kr.controller.DispatcherServlet</servlet-class>
+  	<init-param>
+  		<param-name>propertiesPath</param-name><!-- DispatcherServlet이 동작될 때 ActionMap.properties를 읽어간다. -->
+  		<param-value>/WEB-INF/ActionMap.properties</param-value><!-- ActionMap.properties의 경로 -->
+  	</init-param>
+  </servlet>
+  <servlet-mapping><!-- servlet 주소를 매핑 -->
+  	<servlet-name>DispatcherServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern><!-- 앞에 /없이 작성해야 함 앞에 /가 있으면 오류난다. -->
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+</web-app>
