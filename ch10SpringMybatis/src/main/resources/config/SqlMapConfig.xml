@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias type="kr.spring.board.vo.BoardVO" alias="boardVO"/><!-- 알리아스를 줘서 짧게 호출 가능 -->
+	</typeAliases>
+	<mappers>
+		<mapper resource="kr/spring/board/dao/BoardMapper.xml"/><!-- 리소스 위치. xml이 파일이기 때문에 경로형태로 명시 -->
+	</mappers>
+</configuration>
+
+
+
+
+
