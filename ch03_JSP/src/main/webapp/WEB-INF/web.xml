@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>ch03_JSP</display-name>
+  <!-- 응답 상태 코드별 에러 페이지 지정 -->
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/ch06_errorPage/error/error404.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/ch06_errorPage/error/error500.jsp</location>
+  </error-page>
+  <!-- 에러 타입별 에러 페이지 지정 -->
+  <error-page>
+  	<exception-type>java.lang.NullPointerException</exception-type>
+  	<location>/ch06_errorPage/error/errorNullPointer.jsp</location>
+  </error-page>
+  <!-- 세션 유지 시간 지정(분단위로 지정) -->
+  <session-config>
+  	<session-timeout>50</session-timeout>
+  </session-config>
+  <!-- DispatcherServlet 설정 -->
+  <servlet>
+  	<servlet-name>DispatcherServlet</servlet-name> <!-- 반드시 클래스명을 servlet-name으로 사용할 필요는 없다. -->
+  	<servlet-class>kr.web.mvc.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>DispatcherServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern> <!-- /를 붙이면 오류가 난다. *는 모든 문자열을 의미한다. 모든 문자열.do라고 주소를 가공시키려고 한다. -->
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+</web-app>
