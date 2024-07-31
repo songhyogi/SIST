@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#btn1').on('click',function(){
+						//속도값,투명도
+		$('#dog').fadeTo('slow',0.3);
+	});
+	
+	$('#btn2').on('click',function(){
+		$('#dog').fadeTo('slow',1);//완전 불투명
+	});
+	
+	$('#btn3').on('click',function(){
+		$('#dog').fadeTo('slow',0);//완전 투명
+	});
+});
+</script>
+</head>
+<body>
+	<button id="btn1">투명도(0.3)</button>
+	<button id="btn2">투명도(1)</button>
+	<button id="btn3">투명도(0)</button>
+	<div>
+		<img id="dog" src="../files/dog.png" width="120" height="100">
+	</div>
+</body>
+</html>

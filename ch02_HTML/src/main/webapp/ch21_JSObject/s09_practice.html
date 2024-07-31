@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>실습</title>
+</head>
+<body>
+	<script type="text/javascript">
+/*
+[실습]
+이름    수입   지출   세금(5%,getTax) 잔액(getBalance,세금 공제)
+홍길동  3000  2500 
+박문수  5000  1100
+이순신  4000  3600
+김유신  7000  4200
+*/
+	//빈 배열 생성
+	const member = [];
+
+	//객체를 배열에 저장
+	member.push({이름:'홍길동',수입:3000,지출:2500});
+	member.push({이름:'박문수',수입:5000,지출:1100});
+	member.push({이름:'이순신',수입:4000,지출:3600});
+	member.push({이름:'김유신',수입:7000,지출:4200});
+
+	//array 배열 내의 모든 객체에 메서드 추가
+	for(let i in member) {
+		//세금 구하는 메서드 추가
+		member[i].getTax = function() {
+			return this.수입 * 0.05;
+		};
+		//잔액 구하는 메서드 추가
+		member[i].getBalance = function() {
+			return this.수입 - this.getTax() - this.지출;
+		};
+		//toString 정의
+		member[i].toString = function(){
+			return this.이름 + ', ' + this.수입 + ', ' + 
+			this.지출 + ', ' + this.getTax() + ', ' + this.getBalance();
+		};
+	}
+	//배열에 저장된 객체들의 속성 및 메서드 호출
+	document.write('이름, 수입, 지출, 세금, 잔액<br>')
+	for(let i in member) {
+		document.write(member[i].toString()+'<br>');
+	}
+</script>
+</body>
+</html>

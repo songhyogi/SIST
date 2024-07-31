@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자식선택자</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	//자식 선택자
+	$('body > div').css('border','3px solid red');//직계자식만 선택 가능
+});
+</script>
+</head>
+<body>
+	<div>
+		<ul>
+			<li>한국</li>
+			<li>미국</li>
+			<li>일본</li>
+			<li>중국</li>
+			<li>호주</li>
+		</ul>
+		<div>서울</div>
+	</div>
+</body>
+</html>

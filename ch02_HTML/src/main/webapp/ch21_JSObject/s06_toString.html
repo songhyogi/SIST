@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>toString</title>
+</head>
+<body>
+<script type="text/javascript">
+	//빈 객체 생성
+	const student = {};
+	
+	document.write(student);
+	document.write('<br>');
+	document.write(student.toString() + '<br>');
+	document.write('--------------<br>');
+	
+	//객체에 속성 추가
+	student.이름 = '박문수';
+	student.취미 = '악기';
+	student.특기 = '프로그래밍';
+	
+	//객체에 메서드 추가
+	student.toString = function(){
+		let msg = '';
+		for(let key in this){
+			if(key!= 'toString'){//toString제외
+				msg += key + ':' + this[key] + '<br>';
+			}
+		}
+		return msg;
+	};
+	document.write(student.toString() + '<br>');
+	document.write('--------------<br>');
+	document.write(student);
+</script>
+</body>
+</html>

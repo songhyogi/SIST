@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>스타벅스</title>
+<style type="text/css">
+/*폰트 지정*/
+@import
+	url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap')
+	;
+
+@import
+	url('https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap')
+	;
+
+@import
+	url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap')
+	;
+/*기본 설정*/
+* {
+	margin: 0;
+	padding:0;
+}
+
+body {
+	background-color: #faf7e1;
+	font-family: 'Gamja Flower';
+}
+
+#page_wrap {
+	width: 1000px;
+	margin: 40px auto;
+}
+/*header 스타일 지정*/
+header {
+	width: 100%;
+	font-size: 1.3em;
+}
+/*메뉴*/
+nav {
+	height: 30%;
+}
+
+nav ul#main_nav {
+	list-style: none;
+}
+
+nav ul#main_nav li {
+	display: inline-block;
+}
+
+nav a {
+	text-decoration: none;
+	padding: 10px 10px;
+	text-align: center;
+}
+
+nav a:link, nav a:visited {
+	color: black;
+}
+
+nav a:hover {
+	color: white;
+	background-color: #036635;
+}
+/*내용*/
+div.promotion {
+	background-color: #036635;
+	padding: 10px;
+	text-align: center;
+	color: white;
+}
+
+.newmenu {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#photo1 {
+	margin: 0 20px 0 6px;
+}
+
+#photo2 {
+	margin: 0 20px 0 20px;
+}
+
+#photo3 {
+	margin: 0 6px 0 20px;
+}
+
+#photo4 {
+	margin: 0 20px 0 6px;
+}
+
+#photo5 {
+	margin: 0 20px 0 20px;
+}
+
+#photo6 {
+	margin: 0 6px 0 20px;
+}
+
+div.text {
+	text-align: center;
+}
+
+#spring {
+	background-color: #f9f7fa;
+}
+
+#spring .springcoffee {
+	float: left;
+	padding: 5% 10% 5% 15%;
+}
+
+.springtext {
+	padding: 20% 5% 20% 5%;
+	font-family: 'Poor Story';
+}
+
+#store {
+	background-color: #dfe6e4;
+}
+
+#store .cafephoto {
+	float: right;
+	padding: 5% 5%;
+}
+
+.storetext {
+	padding: 20%;
+}
+.search-bar{
+	height:30px;
+	padding:7px;
+}
+.input-search{
+	display:block;
+	float:left;
+	background-color:#FFFFFF;
+	border:1px solid #CCCCCC;
+				/*상좌 상우 하우 하좌*/
+	border-radius:15px 0 0 15px;
+	width:130px;
+	height:26px;
+	padding:0 0 0 10px;
+	font-size:12px;
+	color:#555555;
+}
+.input-search:focus{
+	border-color:rgba(29, 110, 2,0.6);
+	
+	outline:0;
+	box-shadow:0 1px 1px rgba(0,0,0,0.05);
+}
+
+.input-search-submit{
+	width:50px;
+	height:26px;
+				
+	border-radius:0 15px 15px 0;
+	border:1px solid #CCCCCC;
+	margin-left:-1px;
+}
+footer {
+	font-family: 'Lato', cursive;
+	clear: both;
+	padding: 20px;
+	text-align: right;
+}
+
+</style>
+</head>
+<body>
+	<div id="page_wrap">
+		<!-- 머리말 시작 -->
+		<header>
+			<nav>
+				<ul id="main_nav">
+					<li><img src="../files/스타벅스 로고.png" width=120px;></li>
+					<li><a href="#spring">COFFEE</a></li>
+					<li><a href="#">MENU</a></li>
+					<li><a href="#store">STORE</a></li>
+					<li><a href="#">RESPONSIBILITY</a></li>
+					<li><a href="#">STARBUCKS REWARDS</a></li>
+					<li><a href="#">CORPORATE SALES</a></li>
+					<li><a href="#new">WHAT'S NEW</a></li>
+				</ul>
+			</nav>
+		</header>
+		<!-- 머리말 끝 -->
+		<!-- 내용시작 -->
+		<section>
+			<div id="banner">
+				<img src="../files/배너2.png" width=1000px;>
+			</div>
+		</section>
+		<section id="new">
+			<div class="promotion">
+				<h3>이달의 프로모션</h3>
+			</div>
+			<div class="newmenu">
+				<div id="photo1">
+					<img src="../files/아이스슈크림라떼.jpg">
+					<div class="text">아이스 슈크림 라떼</div>
+				</div>
+				<div id="photo2">
+					<img src="../files/슈크림라떼.jpg">
+					<div class="text">슈크림 라떼</div>
+				</div>
+				<div id="photo3">
+					<img src="../files/피스타치오크림콜드브루.jpg">
+					<div class="text">피스타치오 크림 콜드브루</div>
+				</div>
+				<div id="photo4">
+					<img src="../files/피스타치오핑크롤.jpg">
+					<div class="text">피스타치오 핑크 롤</div>
+				</div>
+				<div id="photo5">
+					<img src="../files/라이트핑크자몽피지오.jpg">
+					<div class="text">라이트 핑크 자몽 피지오</div>
+				</div>
+				<div id="photo6">
+					<img src="../files/샌드위치.jpg">
+					<div class="text">치킨&amp;머쉬룸 멜팅 치즈 샌드위치</div>
+				</div>
+			</div>
+		</section>
+		<section id="spring">
+			<div class="springcoffee">
+				<img src="../files/springcf.png">
+			</div>
+			<div class="springtext">
+				<h3>봄처럼 포근하고 부드러운 피니쉬</h3>
+				<h2>스프링 시즌 블렌드</h2>
+				<h4>
+					코코아와 꿀처럼 달콤한 향과<br> 부담스럽지 않은 산미와 바디로<br> 누구나 편하게 즐길 수 있는
+					시즌 한정 원두
+				</h4>
+			</div>
+		</section>
+		<section id="store">
+			<div class="cafephoto">
+				<img src="../files/스타벅스 사진.png">
+			</div>
+			<div class="storetext">
+				<h2>전국 어디서나 스타벅스와 함께!</h2>
+				<h3>스타벅스와 함께 한잔의 여유를 가져보세요.</h3>
+				<p>나의 취향이 머무는 곳,스타벅스 리저브매장</p>
+				<p>더욱 편리하게 스타벅스를 만나보는 드라이브 스루 매장</p>
+				<p>다양한 스타벅스 매장이 여러분을 기다립니다.</p>
+				<br>
+				<div class="storesearch">
+					<div class="search-bar">
+						<form>
+							<input type="search" class="input-search"> <input
+								type="submit" class="input-search-submit" value="찾기">
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 내용 끝 -->
+		<!-- 꼬리말 시작 -->
+		<footer>
+			<p>&copy;Starbucks Coffee Company</p>
+		</footer>
+		<!-- 꼬리말 끝 -->
+
+	</div>
+</body>
+</html>
